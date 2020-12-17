@@ -1,35 +1,39 @@
-const mongoose = require('mongoose');
-const Joi = require('joi');
+const mongoose = require("mongoose");
+const Joi = require("joi");
 
-const Appointment = mongoose.model('Appointment', new mongoose.Schema({
+const Appointment = mongoose.model(
+  "Appointment",
+  new mongoose.Schema({
     fullName: {
-        type: String,
-        required: true,
-        maxlength: 50
-      },
+      type: String,
+      required: true,
+      maxlength: 50,
+    },
     phone: {
-        type: String,
-        required: true
-      },
+      type: String,
+      required: true,
+    },
     preferredDate: {
-        type: Date,
-        required: true
-      },
-    patientID: { 
-        type: String,
-        default: ''
-    }
-  }));
-  
-function validate(appointment) {
-    const schema = Joi.object({
-      fullName: Joi.string().max(50).required(),
-      phone: Joi.string().required(),
-      preferredDate: Joi.date().required()
-    });
+      type: Date,
+      required: true,
+      // default: Date.now,
+    },
+    patientID: {
+      type: String,
+      default: "",
+    },
+  })
+);
 
-    return schema.validate(appointment);
-} 
+function validate(appointment) {
+  const schema = Joi.object({
+    fullName: Joi.string().max(50).required(),
+    phone: Joi.string().required(),
+    preferredDate: Joi.date().required(),
+  });
+
+  return schema.validate(appointment);
+}
 
 exports.Appointment = Appointment;
 exports.validate = validate;
