@@ -19,7 +19,9 @@ router.post('/', async (req, res) => {
         fullName : req.body.fullName,
         phone: req.body.phone,
         // preferredDate: req.body.preferredDate,
-        preferredDate: date 
+        preferredDate: date,
+        message: req.body.message,
+        age: req.body.age 
    });
 
    try {

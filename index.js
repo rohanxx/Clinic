@@ -15,7 +15,6 @@ app.use('/api/appointments', appointments);
 
 app.use('/api/patients', patients);
 
-
 const port = process.env.PORT || 3000;
 
 app.listen(port);

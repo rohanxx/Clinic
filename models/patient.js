@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const Joi = require('joi');
 
 const Patient = mongoose.model('Patient', new mongoose.Schema({
-    age: {
-        type: Number,
+    dob: {
+        type: Date,
         required: true
     },
     description: {
@@ -17,6 +17,10 @@ const Patient = mongoose.model('Patient', new mongoose.Schema({
     bloodGroup: {
         type: String,
         required: true
+    },
+    patientImage: {
+        type: String,
+        required: true
     }
 }));
 
@@ -24,13 +28,13 @@ const Patient = mongoose.model('Patient', new mongoose.Schema({
 function validate(patient) {
     const schema = Joi.object({
         appointmentId: Joi.string().required(),
-        age: Joi.number().required(),
+        dob: Joi.string().required(),
         description: Joi.string().required(),
         address: Joi.string().required(),
         bloodGroup: Joi.string().required()
-      });
+    });
   
-      return schema.validate(patient);
+    return schema.validate(patient);
 }
 
 exports.Patient = Patient;
