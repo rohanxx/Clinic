@@ -12,10 +12,10 @@ const Appointment = mongoose.model('Appointment', new mongoose.Schema({
         required: true
       },
     preferredDate: {
-        type: Date,
+        type: Array,
         required: true
       },
-    message: {
+    message: {                                                        
         type: String
     },
     age: {
@@ -26,16 +26,16 @@ const Appointment = mongoose.model('Appointment', new mongoose.Schema({
         type: String,
         default: ''
     }
-  }));
+}));
   
 function validate(appointment) {
     const schema = Joi.object({
       fullName: Joi.string().max(50).required(),
       phone: Joi.string().required(),
-      preferredDate: Joi.date().required(),
+      preferredDate: Joi.string().required(),
       message: Joi.string(),
       age: Joi.number().required()
-    });
+});
 
     return schema.validate(appointment);
 } 

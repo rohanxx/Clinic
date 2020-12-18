@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
         // preferredDate: req.body.preferredDate,
         preferredDate: date,
         message: req.body.message,
-        age: req.body.age 
+        age: req.body.age
    });
 
    try {
