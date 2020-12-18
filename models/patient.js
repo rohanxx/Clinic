@@ -21,6 +21,9 @@ const Patient = mongoose.model(
       required: true,
       maxlength: 5,
     },
+    patientImage: {
+      type: String,
+    },
   })
 );
 

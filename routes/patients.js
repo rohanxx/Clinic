@@ -18,10 +18,26 @@ const storage = multer.diskStorage({
   },
 });
 
-//* init multer...
-const upload = multer({ storage: storage });
+// * create filter...
+const fileFilter = (req, file, callback) => {
+  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+    callback(null, true);
+  } else {
+    callback(null, false);
+  }
+};
 
-router.get("/");
+//* init multer...
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 1024 * 1024 * 5 },
+  fileFilter: fileFilter,
+});
+
+router.get("/", async (req, res) => {
+  const patient = await Patient.find();
+  res.status(200).send(patient);
+});
 
 router.post("/", upload.single("patientImage"), async (req, res) => {
   const { error } = validate(req.body);
@@ -33,6 +49,7 @@ router.post("/", upload.single("patientImage"), async (req, res) => {
       description: req.body.description,
       address: req.body.address,
       bloodGroup: req.body.bloodGroup,
+      patientImage: req.file.path,
     });
     console.log(req.file);
     const result = await newPatient.save();
