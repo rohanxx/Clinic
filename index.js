@@ -4,7 +4,13 @@ const mongoose = require("mongoose");
 const appointments = require("./routes/Appointments");
 const patients = require("./routes/patients");
 const login = require("./routes/login");
+const config = require("config");
 require("dotenv").config();
+
+if (!config.get("jwtPrivateKey")) {
+  console.error("FATAL ERROR: jwtPrivateKey is not define.");
+  process.exit(1);
+}
 
 mongoose
   .connect("mongodb://localhost/clinic", {
