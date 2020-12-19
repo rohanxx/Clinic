@@ -10,6 +10,7 @@ mongoose
   .connect("mongodb://localhost/clinic", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useCreateIndex: true,
   })
   .then(() => console.log("Connected to the database successfully"))
   .catch((err) => console.log("Could not connect to the database", err));
