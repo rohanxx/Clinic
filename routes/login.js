@@ -28,7 +28,10 @@ router.post("/", async (req, res) => {
   );
   if (!validPassword) return res.status(400).send("Invalid E-mail or password");
 
-  const token = jwt.sign({ _id: patient._id, name: patient.email }, "jwtToken");
+  const token = jwt.sign(
+    { _id: patient._id, name: patient.email },
+    "jwtPrivateKey"
+  );
 
   res.send(token);
 });
