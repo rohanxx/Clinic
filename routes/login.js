@@ -1,4 +1,4 @@
-const { User } = require("../models/user");
+const { Patient } = require("../models/patient");
 const express = require("express");
 const router = express.Router();
 const _ = require("lodash");
@@ -9,8 +9,8 @@ const jwt = require("jsonwebtoken");
 
 //! (GET)..
 router.get("/", async (req, res) => {
-  const user = await User.find().sort({ name: 1 });
-  res.send(user);
+  const patient = await Patient.find().sort({ name: 1 });
+  res.send(patient);
 });
 
 // ! (POST) request for creating new users...
@@ -18,14 +18,17 @@ router.post("/", async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  let user = await User.findOne({ email: req.body.email }).exec();
-  if (!user) return res.status(400).send("Invalid email or Password");
+  let patient = await Patient.findOne({ email: req.body.email }).exec();
+  if (!patient) return res.status(400).send("Invalid email or Password");
 
   //   * to compare email and password with the existing one in db...
-  const validPassword = await bcrypt.compare(req.body.password, user.password);
+  const validPassword = await bcrypt.compare(
+    req.body.password,
+    patient.password
+  );
   if (!validPassword) return res.status(400).send("Invalid E-mail or password");
 
-  const token = jwt.sign({ _id: user._id, name: user.email }, "jwtToken");
+  const token = jwt.sign({ _id: patient._id, name: patient.email }, "jwtToken");
 
   res.send(token);
 });
