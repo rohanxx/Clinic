@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const { hash } = require("../common/hash");
 const { sendCredentials } = require("../common/sms");
 const multer = require("multer");
+const _ = require("lodash");
 
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
@@ -37,6 +38,7 @@ router.post("/", upload.single("patientImage"), async (req, res) => {
       bloodGroup: req.body.bloodGroup,
       password: await hash(req.body.password),
       patientImage: req.file.path,
+      age: req.body.age,
     });
 
     const result = await newPatient.save();
