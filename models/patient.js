@@ -4,18 +4,6 @@ const Joi = require("joi");
 const Patient = mongoose.model(
   "Patient",
   new mongoose.Schema({
-    address: {
-      type: String,
-      required: true,
-    },
-    bloodGroup: {
-      type: String,
-      required: true,
-    },
-    description: {
-      type: String,
-      required: true,
-    },
     dob: {
       type: Date,
       required: true,
@@ -53,10 +41,6 @@ const Patient = mongoose.model(
       minlength: 5,
       maxlength: 1024,
     },
-    patientImage: {
-      type: String,
-      required: true,
-    },
     referred_by_dr: {
       type: String,
       default: "",
@@ -75,16 +59,12 @@ const Patient = mongoose.model(
 function validate(patient) {
   const schema = Joi.object({
     appointmentId: Joi.string().required(),
-    address: Joi.string().required(),
-    bloodGroup: Joi.string().required(),
     dob: Joi.string().required(),
-    description: Joi.string().required(),
     diagnosis: Joi.string().max(255),
     email: Joi.string().min(5).max(255).required().email(),
     ergonomic_advice: Joi.string(),
     fee: Joi.string().required(),
     gender: Joi.string().required(),
-    password: Joi.string().min(5).max(255).required(),
     referred_by_dr: Joi.string(),
     treatment: Joi.string().required(),
     weight: Joi.string(),

@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
 
    try {
         appointment = await appointment.save();
-        const r = await sendSms(appointment.phone);
+        const r = await sendSms(appointment.fullName, appointment.phone);
         res.status(200).send(appointment);
    }
    catch(ex) {

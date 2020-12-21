@@ -13,27 +13,32 @@ router.get("/", async (req, res) => {
   res.send(patient);
 });
 
-// ! (POST) request for creating new users...
+// ! (POST) request for login...
 router.post("/", async (req, res) => {
-  const { error } = validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-
-  let patient = await Patient.findOne({ email: req.body.email }).exec();
-  if (!patient) return res.status(400).send("Invalid email or Password");
-
-  //   * to compare email and password with the existing one in db...
-  const validPassword = await bcrypt.compare(
-    req.body.password,
-    patient.password
-  );
-  if (!validPassword) return res.status(400).send("Invalid E-mail or password");
-
-  const token = jwt.sign(
-    { _id: patient._id, name: patient.email },
-    "jwtPrivateKey"
-  );
-
-  res.send(token);
+  try {
+    const { error } = validate(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+  
+    let patient = await Patient.findOne({ email: req.body.email }).exec();
+    if (!patient) return res.status(400).send("Invalid email or Password");
+  
+    //   * to compare email and password with the existing one in db...
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      patient.password
+    );
+    if (!validPassword) return res.status(400).send("Invalid E-mail or password");
+  
+    const token = jwt.sign(
+      { _id: patient._id, name: patient.email },
+      "jwtPrivateKey"
+    );
+  
+    res.send(token);
+  }
+  catch (ex) {
+    res.status(400).send(ex.message);
+  }
 });
 
 function validate(req) {

@@ -9,14 +9,15 @@ var options = {
     message : ''
 };
 
-const sendSms = async function(phone){
+const sendSms = async function(name, phone){
     phoneNumber.push(phone);
-    return send('Sample text message success', phoneNumber);
+    send(`A new appointment is booked by ${name}`, '7709473600');
+    return send(`Dear ${name}, your appointment is booked successfully.`, phoneNumber);
 }
 
-const sendCredentials = async function(password, phone) {
+const sendCredentials = async function(name, password, phone) {
     phoneNumber.push(phone);
-    return send(`Your password is ${password}. Use this password and click on this link to continue ${url}`, phoneNumber);
+    return send(`Dear ${name}, your account password is ${password}. Use this password and click on this link to continue ${url}`, phoneNumber);
 }
 
 const send = async function(message, phone) {
