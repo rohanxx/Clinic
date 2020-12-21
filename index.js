@@ -1,6 +1,6 @@
 const express = require("express");
+const db = require('./db');
 const app = express();
-const mongoose = require("mongoose");
 const appointments = require("./routes/Appointments");
 const patients = require("./routes/patients");
 const login = require("./routes/login");
@@ -12,15 +12,38 @@ if (!config.get("jwtPrivateKey")) {
   process.exit(1);
 }
 
-mongoose
-  .connect("mongodb://localhost/clinic", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: true
-  })
-  .then(() => console.log("Connected to the database successfully"))
-  .catch((err) => console.log("Could not connect to the database", err));
+app.get('/createdb', (req, res) => {
+  let sql = 'CREATE DATABASE clinic_db';
+  db.query(sql, (err, result) => {
+    if (err) {
+      throw err;
+    }
+    console.log(result);
+    res.send('Database created');
+  });
+});
+
+app.get('/createappointmenttable', (req, res) => {
+  let sql = 'CREATE TABLE appointments(id VARCHAR(255) PRIMARY KEY, fullName VARCHAR(50), phone VARCHAR(11), preferredDate DATE, message VARCHAR(255) null, age INT, patientID VARCHAR(255) null)';
+  db.query(sql, (err, result) => {
+    if (err) {
+      throw err;
+    }
+    console.log(result);
+    res.send('Appointments table created');
+  });
+});
+
+app.get('/createpatienttable', (req, res) => {
+  let sql = 'CREATE TABLE patients(id VARCHAR(255) PRIMARY KEY, dob DATE, diagnosis VARCHAR(255), digitalSign VARCHAR(255), email VARCHAR(255), ergonomic_advice VARCHAR(255), fee VARCHAR(50), gender VARCHAR(7), password VARCHAR(1024), referred_by_dr VARCHAR(50), treatment VARCHAR(255), weight VARCHAR(20))';
+  db.query(sql, (err, result) => {
+    if (err) {
+      throw err;
+    }
+    console.log(result);
+    res.send('Appointments table created');
+  });
+});
 
 app.use(express.json());
 
@@ -33,3 +56,4 @@ app.use("/api/login", login);
 const port = process.env.PORT || 3000;
 
 app.listen(port);
+

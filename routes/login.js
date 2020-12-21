@@ -1,40 +1,43 @@
-const { Patient } = require("../models/patient");
 const express = require("express");
 const router = express.Router();
-const _ = require("lodash");
 const bcrypt = require("bcrypt");
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
-// const config = require("config");
+const config = require("config");
+const db = require('../db');
 
-//! (GET)..
-router.get("/", async (req, res) => {
-  const patient = await Patient.find().sort({ name: 1 });
-  res.send(patient);
-});
-
-// ! (POST) request for login...
-router.post("/", async (req, res) => {
+// ! (POST) login...
+router.post("/", (req, res) => {
   try {
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
   
-    let patient = await Patient.findOne({ email: req.body.email }).exec();
-    if (!patient) return res.status(400).send("Invalid email or Password");
-  
-    //   * to compare email and password with the existing one in db...
-    const validPassword = await bcrypt.compare(
-      req.body.password,
-      patient.password
-    );
-    if (!validPassword) return res.status(400).send("Invalid E-mail or password");
-  
-    const token = jwt.sign(
-      { _id: patient._id, name: patient.email },
-      "jwtPrivateKey"
-    );
-  
-    res.send(token);
+    // let patient = await Patient.findOne({ email: req.body.email }).exec();
+    let sql = 'SELECT * FROM patients WHERE email = ?';
+    db.query(sql, req.body.email, async (err, result) => {
+      if(err) {
+        throw err;
+      }
+      
+      let patient = result[0];
+      if(!patient) return res.status(400).send("Invalid Email or Password");
+
+      //Validating password
+      const validPassword = await bcrypt.compare(
+        req.body.password,
+        patient.password
+      );
+
+      if (!validPassword) return res.status(400).send("Invalid Email or Password");
+
+      //Generating a new token
+      const token = jwt.sign(
+        { id: patient.id, name: patient.email },
+        config.get("jwtPrivateKey")
+      );
+
+      res.status(200).send(token);
+    });
   }
   catch (ex) {
     res.status(400).send(ex.message);
