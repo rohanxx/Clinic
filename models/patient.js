@@ -6,12 +6,12 @@ function validate(patient) {
       dob: Joi.string().required(),
       diagnosis: Joi.string().max(255),
       email: Joi.string().min(5).max(255).required().email(),
-      ergonomic_advice: Joi.string(),
-      fee: Joi.string().required(),
-      gender: Joi.string().required(),
-      referred_by_dr: Joi.string(),
-      treatment: Joi.string().required(),
-      weight: Joi.string(),
+      ergonomic_advice: Joi.string().max(255),
+      fee: Joi.string().max(50).required(),
+      gender: Joi.string().max(10).required(),
+      referred_by_dr: Joi.string().max(50),
+      treatment: Joi.string().max(255).required(),
+      weight: Joi.string().max(20),
     });
   
     return schema.validate(patient);

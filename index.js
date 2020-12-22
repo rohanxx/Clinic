@@ -24,7 +24,7 @@ app.get('/createdb', (req, res) => {
 });
 
 app.get('/createappointmenttable', (req, res) => {
-  let sql = 'CREATE TABLE appointments(id VARCHAR(255) PRIMARY KEY, fullName VARCHAR(50), phone VARCHAR(11), preferredDate DATE, message VARCHAR(255) null, age INT, patientID VARCHAR(255) null)';
+  let sql = 'CREATE TABLE appointments(id VARCHAR(255) PRIMARY KEY, fullName VARCHAR(50), phone VARCHAR(15), preferredDate DATE, message VARCHAR(255) null, age INT, patientID VARCHAR(255) null)';
   db.query(sql, (err, result) => {
     if (err) {
       throw err;
@@ -35,7 +35,7 @@ app.get('/createappointmenttable', (req, res) => {
 });
 
 app.get('/createpatienttable', (req, res) => {
-  let sql = 'CREATE TABLE patients(id VARCHAR(255) PRIMARY KEY, dob DATE, diagnosis VARCHAR(255), digitalSign VARCHAR(255), email VARCHAR(255), ergonomic_advice VARCHAR(255), fee VARCHAR(50), gender VARCHAR(7), password VARCHAR(1024), referred_by_dr VARCHAR(50), treatment VARCHAR(255), weight VARCHAR(20))';
+  let sql = 'CREATE TABLE patients(id VARCHAR(255) PRIMARY KEY, dob DATE, diagnosis VARCHAR(255), digitalSign VARCHAR(255), email VARCHAR(255), ergonomic_advice VARCHAR(255), fee VARCHAR(50), gender VARCHAR(10), password VARCHAR(1024), referred_by_dr VARCHAR(50), treatment VARCHAR(255), weight VARCHAR(20))';
   db.query(sql, (err, result) => {
     if (err) {
       throw err;
