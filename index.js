@@ -18,7 +18,6 @@ app.get('/createdb', (req, res) => {
     if (err) {
       throw err;
     }
-    console.log(result);
     res.send('Database created');
   });
 });
@@ -29,7 +28,6 @@ app.get('/createappointmenttable', (req, res) => {
     if (err) {
       throw err;
     }
-    console.log(result);
     res.send('Appointments table created');
   });
 });
@@ -40,7 +38,6 @@ app.get('/createpatienttable', (req, res) => {
     if (err) {
       throw err;
     }
-    console.log(result);
     res.send('Appointments table created');
   });
 });
