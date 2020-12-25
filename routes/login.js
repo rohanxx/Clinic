@@ -31,7 +31,7 @@ router.post("/", async (req, res) => {
   
     const token = jwt.sign(
       { _id: patient._id, name: patient.email },
-      "jwtPrivateKey"
+      config.get("jwtPrivateKey")
     );
   
     res.send(token);
